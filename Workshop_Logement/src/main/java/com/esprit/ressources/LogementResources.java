@@ -13,34 +13,34 @@ import com.esprit.entities.Logement;
 
 
 
+
+@Path("logements")
 public class LogementResources {
 
-	public static LogementBusiness LB=new LogementBusiness();
-	
+	private static LogementBusiness LB = new LogementBusiness();
 
-	
-	
-	public Response  GetAll()
-	{
-		
-		if(LB.getLogements()!=null)
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllLogements() {
+		if (LB.getLogements() != null && !LB.getLogements().isEmpty()) {
 			return Response.status(Status.OK).entity(LB.getLogements()).build();
-		
-		else 
-			
-			return Response.status(Status.NOT_FOUND).entity("liste vide" ).build();	
+		} else {
+			return Response.status(Status.NOT_FOUND).entity("La liste est vide").build();
+		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+	@GET
+	@Path("/get/{type}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response  GetByType(@PathParam("type") Logement.Type type)
+	{
+		if(LB.getLogementsByType(type)!=null)
+			return Response.status(Status.OK).entity(LB.getLogementsByType(type)).build();
+		else
+			return Response.status(Status.NOT_FOUND).entity("liste vide" ).build();
+	}
+
 	
 	
 }
